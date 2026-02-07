@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "category": "baggage",
+    "questions": [
+      "baggage allowance",
+      "how much luggage can i carry",
+      "carry on baggage"
+    ],
+    "answer": "You can carry 7kg cabin luggage and 20kg checked baggage."
+  },
+  {
+    "id": 2,
+    "category": "refund",
+    "questions": [
+      "refund policy",
+      "how do i get a refund",
+      "cancel ticket refund"
+    ],
+    "answer": "Refunds are processed within 5–7 business days."
+  },
+  {
+    "id": 3,
+    "category": "checkin",
+    "questions": [
+      "online check in",
+      "when can i check in",
+      "checkin time"
+    ],
+    "answer": "Online check-in opens 24 hours before departure."
+  }
+]
