@@ -5,7 +5,7 @@ from openai import OpenAI
 
 from services.booking_service import book_ticket, get_booking_by_pnr, get_booking_by_id
 
-from services.flights_service import get_flight_schedule
+from services.flights_service import get_flight_schedule, search_emirates_flights
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -78,6 +78,31 @@ tools = [
                 ]
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_emirates_flights",
+            "description": "Search Emirates flights between two cities on a specific date",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "origin": {
+                        "type": "string",
+                        "description": "IATA airport code (e.g., BOM)"
+                    },
+                    "destination": {
+                        "type": "string",
+                        "description": "IATA airport code (e.g., DXB)"
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": "Travel date in YYYY-MM-DD format"
+                    }
+                },
+                "required": ["origin", "destination", "date"]
+            }
+        }
     }
 ]
 
@@ -109,6 +134,8 @@ async def handle_message(message: str):
             result = await get_booking_by_id(args["id"])
         elif tool.function.name == "get_booking_by_pnr":
             result = await get_booking_by_pnr(args["pnr"])
+        elif tool.function.name == "search_emirates_flights":
+            result = await search_emirates_flights(args["origin"],args["destination"],args["date"])
         else tool.function.name == "get_flight_schedule":
             result = await get_flight_schedule(args["carrierCode"],args["flightNumber"],args["date"])
 
