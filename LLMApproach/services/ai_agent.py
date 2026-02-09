@@ -5,6 +5,8 @@ from openai import OpenAI
 
 from services.booking_service import book_ticket, get_booking_by_pnr, get_booking_by_id
 
+from services.flights_service import get_flight_schedule
+
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -56,6 +58,26 @@ tools = [
                 "required": ["id"]
             }
         }
+    },
+     {
+        "type": "function",
+        "function": {
+            "name": "get_flight_schedule",
+            "description": "Fetch flight schedule from Amadeus",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "carrierCode": {"type": "string"},
+                    "flightNumber": {"type": "string"},
+                    "date": {"type": "string"}
+                },
+                "required": [
+                    "carrierCode",
+                    "flightNumber",
+                    "date"
+                ]
+            }
+        }
     }
 ]
 
@@ -85,8 +107,10 @@ async def handle_message(message: str):
             result = await book_ticket(args)
         elif tool.function.name == "get_booking_by_id":
             result = await get_booking_by_id(args["id"])
-        else tool.function.name == "get_booking_by_pnr":
+        elif tool.function.name == "get_booking_by_pnr":
             result = await get_booking_by_pnr(args["pnr"])
+        else tool.function.name == "get_flight_schedule":
+            result = await get_flight_schedule(args["carrierCode"],args["flightNumber"],args["date"])
 
         return result
 
