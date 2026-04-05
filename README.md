@@ -186,6 +186,8 @@ The AI agent extracts flight parameters and routes requests to backend services.
 
 ---
 
-## 📜 License
+## Author
 
-None
+Jay Sanghavi
+
+GitHub: https://github.com/JaySanghavi
